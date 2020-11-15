@@ -1,3 +1,5 @@
+import 'package:flutter_auth/src/models/user_model.dart';
+import 'package:flutter_auth/src/repositories/user_repository.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_auth/src/shared/helpers/extensions.dart';
 
@@ -95,5 +97,41 @@ abstract class _SignUpStoreBase with Store {
     } else {
       return 'Passwords must match';
     }
+  }
+
+  @computed
+  bool get isFormValid => (nameValid &&
+      emailValid &&
+      phoneValid &&
+      passwordValid &&
+      confirmPasswordValid);
+
+  @computed
+  Function get signUpPressed => (isFormValid) ? _signUp : null;
+
+  @observable
+  bool loading = false;
+
+  @observable
+  String errorMessage;
+
+  @action
+  Future<void> _signUp() async {
+    loading = true;
+
+    final User user = User(
+      nickname: name,
+      email: email,
+      password: password,
+      phone: phone,
+    );
+
+    try {
+      await UserRepository().signUp(user);
+    } catch (e) {
+      errorMessage = e;
+    }
+
+    loading = false;
   }
 }

@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/src/config/app/custom_colors.dart';
+import 'package:flutter_auth/src/shared/components/custom_progress_indicator/custom_progress_indicator.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({Key key, this.title, this.onPressed}) : super(key: key);
+  const CustomButton({
+    Key key,
+    this.title,
+    this.onPressed,
+    this.loading = false,
+  }) : super(key: key);
 
   final String title;
   final Function onPressed;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +23,20 @@ class CustomButton extends StatelessWidget {
       child: RaisedButton(
         elevation: 0,
         color: CustomColors.secondaryColor,
+        disabledColor: CustomColors.secondaryColor.withAlpha(120),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
         onPressed: onPressed,
-        child: Text(
-          title,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-          ),
-        ),
+        child: (loading)
+            ? CustomProgressIndicator()
+            : Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
       ),
     );
   }

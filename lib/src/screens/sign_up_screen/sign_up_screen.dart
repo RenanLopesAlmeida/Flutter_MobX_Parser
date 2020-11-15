@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_auth/src/config/app/custom_colors.dart';
 import 'package:flutter_auth/src/screens/sign_up_screen/widgets/field_title.dart';
 import 'package:flutter_auth/src/shared/components/custom_button.dart';
+import 'package:flutter_auth/src/shared/components/error_box/error_box.dart';
 import 'package:flutter_auth/src/stores/sign_up_store/sign_up_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
@@ -35,6 +36,11 @@ class SignUpScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Observer(builder: (_) {
+                      return ErrorBox(
+                        message: _signUpStore.errorMessage,
+                      );
+                    }),
                     FieldTitle(
                       title: 'Nickname',
                       subtitle:
@@ -127,10 +133,13 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       );
                     }),
-                    CustomButton(
-                      title: 'Sign Up',
-                      onPressed: () {},
-                    ),
+                    Observer(builder: (_) {
+                      return CustomButton(
+                        title: 'Sign Up',
+                        onPressed: _signUpStore.signUpPressed,
+                        loading: _signUpStore.loading,
+                      );
+                    }),
                     Divider(thickness: 0.9),
                     const SizedBox(height: 20),
                     Wrap(

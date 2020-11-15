@@ -44,6 +44,20 @@ mixin _$SignUpStore on _SignUpStoreBase, Store {
           Computed<bool>(() => super.confirmPasswordValid,
               name: '_SignUpStoreBase.confirmPasswordValid'))
       .value;
+  Computed<bool> _$isFormValidComputed;
+
+  @override
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
+              name: '_SignUpStoreBase.isFormValid'))
+          .value;
+  Computed<Function> _$signUpPressedComputed;
+
+  @override
+  Function get signUpPressed =>
+      (_$signUpPressedComputed ??= Computed<Function>(() => super.signUpPressed,
+              name: '_SignUpStoreBase.signUpPressed'))
+          .value;
 
   final _$nameAtom = Atom(name: '_SignUpStoreBase.name');
 
@@ -120,6 +134,43 @@ mixin _$SignUpStore on _SignUpStoreBase, Store {
     });
   }
 
+  final _$loadingAtom = Atom(name: '_SignUpStoreBase.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  final _$errorMessageAtom = Atom(name: '_SignUpStoreBase.errorMessage');
+
+  @override
+  String get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
+  }
+
+  @override
+  set errorMessage(String value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
+    });
+  }
+
+  final _$_signUpAsyncAction = AsyncAction('_SignUpStoreBase._signUp');
+
+  @override
+  Future<void> _signUp() {
+    return _$_signUpAsyncAction.run(() => super._signUp());
+  }
+
   final _$_SignUpStoreBaseActionController =
       ActionController(name: '_SignUpStoreBase');
 
@@ -186,11 +237,15 @@ email: ${email},
 phone: ${phone},
 password: ${password},
 confirmPassword: ${confirmPassword},
+loading: ${loading},
+errorMessage: ${errorMessage},
 nameValid: ${nameValid},
 emailValid: ${emailValid},
 phoneValid: ${phoneValid},
 passwordValid: ${passwordValid},
-confirmPasswordValid: ${confirmPasswordValid}
+confirmPasswordValid: ${confirmPasswordValid},
+isFormValid: ${isFormValid},
+signUpPressed: ${signUpPressed}
     ''';
   }
 }
