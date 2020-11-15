@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_auth/src/config/app/custom_colors.dart';
 import 'package:flutter_auth/src/screens/sign_up_screen/widgets/field_title.dart';
 import 'package:flutter_auth/src/shared/components/custom_button.dart';
@@ -53,31 +55,43 @@ class SignUpScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     FieldTitle(
                       title: 'E-mail',
-                      subtitle: "We'll send a confirmation by e-mail",
+                      subtitle: "We'll send you a confirmation by e-mail",
                     ),
                     const SizedBox(height: 4),
-                    TextField(
-                      cursorColor: CustomColors.secondaryColor,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Example: jonny@gmail.com',
-                      ),
-                    ),
+                    Observer(builder: (_) {
+                      return TextField(
+                        cursorColor: CustomColors.secondaryColor,
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: _signUpStore.setEmail,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Example: jonny@gmail.com',
+                          errorText: _signUpStore.emailError,
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 20),
                     FieldTitle(
                       title: 'Phone',
                       subtitle: "Protect your account",
                     ),
                     const SizedBox(height: 4),
-                    TextField(
-                      cursorColor: CustomColors.secondaryColor,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: '(99) 99999-9999',
-                      ),
-                    ),
+                    Observer(builder: (_) {
+                      return TextField(
+                        cursorColor: CustomColors.secondaryColor,
+                        keyboardType: TextInputType.number,
+                        onChanged: _signUpStore.setPhone,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: '(99) 99999-9999',
+                          errorText: _signUpStore.phoneError,
+                        ),
+                        inputFormatters: [
+                          WhitelistingTextInputFormatter.digitsOnly,
+                          TelefoneInputFormatter(),
+                        ],
+                      );
+                    }),
                     const SizedBox(height: 20),
                     FieldTitle(
                       title: 'Password',
@@ -85,26 +99,34 @@ class SignUpScreen extends StatelessWidget {
                           "Use characters, numbers and special characters",
                     ),
                     const SizedBox(height: 4),
-                    TextField(
-                      cursorColor: CustomColors.secondaryColor,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
+                    Observer(builder: (_) {
+                      return TextField(
+                        cursorColor: CustomColors.secondaryColor,
+                        obscureText: true,
+                        onChanged: _signUpStore.setPassword,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          errorText: _signUpStore.passwordError,
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 20),
                     FieldTitle(
                       title: 'Confirm Password',
                       subtitle: "repeat your password",
                     ),
                     const SizedBox(height: 4),
-                    TextField(
-                      cursorColor: CustomColors.secondaryColor,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
+                    Observer(builder: (_) {
+                      return TextField(
+                        cursorColor: CustomColors.secondaryColor,
+                        obscureText: true,
+                        onChanged: _signUpStore.setConfirmPassword,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          errorText: _signUpStore.confirmPasswordPasswordError,
+                        ),
+                      );
+                    }),
                     CustomButton(
                       title: 'Sign Up',
                       onPressed: () {},
