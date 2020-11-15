@@ -1,16 +1,16 @@
-# flutter_auth
+ps: I'm currently working on this project
 
-A new Flutter project.
+# About
 
-## Getting Started
+This project focus on how to create a simple login/SignUp feature using Flutter, mobx, Get_It and Parse Server as backend with some validations
 
-This project is a starting point for a Flutter application.
+## What did I Use
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter
+- MobX
+- Parse Server
+- Get It
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## How it looks like
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://user-images.githubusercontent.com/17504941/99161799-7f900800-26d4-11eb-8626-a76ac2b22371.png)
