@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/src/config/app/custom_colors.dart';
 import 'package:flutter_auth/src/screens/sign_up_screen/widgets/field_title.dart';
 import 'package:flutter_auth/src/shared/components/custom_button.dart';
+import 'package:flutter_auth/src/stores/sign_up_store/sign_up_store.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 
 class SignUpScreen extends StatelessWidget {
+  final _signUpStore = GetIt.I<SignUpStore>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,11 +39,15 @@ class SignUpScreen extends StatelessWidget {
                           "How it's gonna looks like in your announcements",
                     ),
                     const SizedBox(height: 4),
-                    TextField(
-                      cursorColor: CustomColors.secondaryColor,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Example: Jonny D.',
+                    Observer(
+                      builder: (_) => TextField(
+                        cursorColor: CustomColors.secondaryColor,
+                        onChanged: _signUpStore.setName,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Example: Jonny D.',
+                          errorText: _signUpStore.nameError,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
