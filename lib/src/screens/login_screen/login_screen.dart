@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/src/config/app/custom_colors.dart';
 import 'package:flutter_auth/src/screens/sign_up_screen/sign_up_screen.dart';
 import 'package:flutter_auth/src/shared/components/custom_button.dart';
+import 'package:flutter_auth/src/shared/components/error_box/error_box.dart';
+import 'package:flutter_auth/src/stores/login_store/login_store.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class LoginScreen extends StatelessWidget {
+  final LoginStore _loginStore = LoginStore();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +40,11 @@ class LoginScreen extends StatelessWidget {
                         fontSize: 16,
                       ),
                     ),
+                    Observer(builder: (_) {
+                      return ErrorBox(
+                        message: _loginStore.errorMessage,
+                      );
+                    }),
                     Text(
                       'E-mail',
                       style: TextStyle(
@@ -43,14 +53,18 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      cursorColor: CustomColors.secondaryColor,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        isDense: true,
-                      ),
-                    ),
+                    Observer(builder: (_) {
+                      return TextFormField(
+                        onChanged: _loginStore.setEmail,
+                        keyboardType: TextInputType.emailAddress,
+                        cursorColor: CustomColors.secondaryColor,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          isDense: true,
+                          errorText: _loginStore.emailError,
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,15 +86,25 @@ class LoginScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    TextFormField(
-                      obscureText: true,
-                      cursorColor: CustomColors.secondaryColor,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        isDense: true,
-                      ),
-                    ),
-                    CustomButton(title: 'Sign In', onPressed: () {}),
+                    Observer(builder: (_) {
+                      return TextFormField(
+                        onChanged: _loginStore.setPassword,
+                        obscureText: true,
+                        cursorColor: CustomColors.secondaryColor,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          isDense: true,
+                          errorText: _loginStore.passwordError,
+                        ),
+                      );
+                    }),
+                    Observer(builder: (_) {
+                      return CustomButton(
+                        title: 'Sign In',
+                        onPressed: _loginStore.loginPressed,
+                        loading: _loginStore.loading,
+                      );
+                    }),
                     Divider(
                       thickness: 0.9,
                     ),
